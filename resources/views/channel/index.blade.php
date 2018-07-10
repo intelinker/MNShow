@@ -2,11 +2,11 @@
 
 <body>
 <nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">冰+后台管理系统</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">冰+后台管理系统</a>
     {{--<input class="form-control form-control w-100" type="text" placeholder="搜索" aria-label="Search">--}}
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">退出登录</a>
+            <a class="nav-link" href="/logout">退出登录</a>
         </li>
     </ul>
 </nav>
@@ -20,9 +20,15 @@
             <h1 class="h2">顾客渠道管理</h1>
         </div>
 
+        @if(Session::has('branch_exist_error'))
+            <div class="alert alert-danger" role="alert">
+                {{ Session::get('branch_exist_error') }}
+            </div>
+        @endif
+
         <h2>渠道列表</h2>
         <div>
-            <button type="button" class="btn btn-danger col-sm-1" style="margin-right: 30px; float:right" onclick="create()">添加</button>
+            <button type="button" class="btn btn-danger" style="margin-right: 30px; float:right; margin-bottom: 20px" onclick="javascript:window.location.href='/channelcreate0'">添加渠道一</button>
         </div>
         <div class="table-responsive">
             <table class="table ">
@@ -36,51 +42,41 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>正序第一位</td>
-                    <td>关于我们</td>
-                    <td><img src=""></td>
-                    <td>
-                        <button id="visible_1" type="button" class="btn btn-light" style="margin-left: 30px" onclick="resetVisible(1)">删除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>正序第二位</td>
-                    <td>产品介绍</td>
-                    <td><img src=""></td>
-                    <td>
-                        <button id="visible_2" type="button" class="btn btn-light" style="margin-left: 30px" onclick="resetVisible(2)">删除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>正序第三位</td>
-                    <td>菜单介绍</td>
-                    <td><img src=""></td>
-                    <td>
-                        <button id="visible_3" type="button" class="btn btn-light" style="margin-left: 30px" onclick="resetVisible(3)">删除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>正序第四位</td>
-                    <td>项目介绍</td>
-                    <td><img src=""></td>
-                    <td>
-                        <button id="visible_4" type="button" class="btn btn-light" style="margin-left: 30px" onclick="resetVisible(4)">删除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>正序第五位</td>
-                    <td>顾客信息</td>
-                    <td><img src=""></td>
-                    <td>
-                        <button id="visible_5" type="button" class="btn btn-light" style="margin-left: 30px" onclick="resetVisible(5)">删除</button>
-                    </td>
-                </tr>
+                @for($i=0; $i<count($channels); $i++)
+                    <tr>
+                        <?php $channel = $channels[$i] ?>
+                        {!! Form::open(array('url'=>'/channels/'.$channel->id, 'method'=>'delete')) !!}
+                        <th scope="row">{{$i +1}}</th>
+                        <td>
+                            @if($channel->level == 0)
+                                {{$channel->name}}
+                            @else
+                                {{$channel->channel1->name}}
+                            @endif
+                        </td>
+                        <td>
+                            @if($channel->level == 0)
+                                <button type="button" class="btn btn-danger" onclick="javascript:window.location.href='/channelcreate1/{{$channel->id}}'">添加</button>
+                            @elseif($channel->level == 1)
+                                {{$channel->name}}
+                            @else
+                                {{$channel->channel2->name}}
+                            @endif
+                        </td>
+                        <td>@if($channel->level == 0)
+                                -
+                            @elseif($channel->level == 1)
+                                <button type="button" class="btn btn-danger" onclick="javascript:window.location.href='/channelcreate/2/{{$channel->level1_id}}/{{$channel->id}}'">添加</button>
+                            @else
+                                {{$channel->name}}
+                            @endif
+                        </td>
+                        <td>
+                            {!! Form::submit('删除', ['class' => 'btn btn-light']) !!}
+                        </td>
+                        {!! Form::close() !!}
+                    </tr>
+                @endfor
                 </tbody>
             </table>
         </div>
@@ -92,6 +88,7 @@
 <script type="text/javascript" src="/js/jQuery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script type="text/javascript">
+
     function create(menu_id) {
         $uri = '/channels/create';
         window.location.assign($uri);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Menu;
+use Faker\Provider\File;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -14,7 +15,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        return view('menu.index');
+        $menus = Menu::all();
+        return view('menu.index', ['menus' => $menus]);
     }
 
     /**
@@ -24,6 +26,7 @@ class MenuController extends Controller
      */
     public function create()
     {
+
         return view('menu.create');
     }
 
@@ -55,9 +58,11 @@ class MenuController extends Controller
      * @param  \App\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function edit(Menu $menu)
+    public function edit($menuid)
     {
-        return view('menu.edit');
+        $menu = Menu::findorFail($menuid);
+//        dd($menu);
+        return view('menu.edit', ['menu'=>$menu]);
     }
 
     /**
@@ -69,7 +74,17 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
-        //
+        $avatar = $request['avatar'];//$request->file('avatar');
+//                dd($avatar);
+        if ($avatar != null) {
+            $avatar = $this->uploadFile($avatar);
+            $update = $menu->update(array_merge($request->except('avatar'), ['avatar'=>$avatar]));
+        } else {
+            $update = $menu->update($request->except('avatar'));
+        }
+//        dd($update);
+//        redirect('menus');
+        return view('menu.index', ['menus' => Menu::all()]);
     }
 
     /**
@@ -81,5 +96,21 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         //
+    }
+
+    public function setVisible($menuid, $visible) {
+        $menu = Menu::findorFail($menuid);
+        $menu->update(['visible'=>$visible]);
+    }
+
+    private function uploadFile($file) {
+        $destPath = 'images/menu/';
+        $fileName = $file->getClientOriginalName();
+        $saveFile = $file->move($destPath, $fileName);
+//        dd($saveFile);
+        if ($saveFile != null)
+            return '/'.$destPath.$fileName;
+        else
+            return null;
     }
 }

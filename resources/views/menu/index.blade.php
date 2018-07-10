@@ -2,11 +2,11 @@
 
 <body>
     <nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">冰+后台管理系统</a>
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">冰+后台管理系统</a>
         {{--<input class="form-control form-control w-100" type="text" placeholder="搜索" aria-label="Search">--}}
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-                <a class="nav-link" href="#">退出登录</a>
+                <a class="nav-link" href="/logout">退出登录</a>
             </li>
         </ul>
     </nav>
@@ -34,104 +34,35 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>正序第一位</td>
-                        <td>关于我们</td>
-                        <td><img src=""></td>
-                        <td></td>
-                        <td>
-                            <button id="edit_1" type="button" class="btn btn-warning" href="/menu/1/edit" onclick="edit(1)">修改</button>
-                            <button id="visible_1" type="button" class="btn btn-primary" style="margin-left: 30px" onclick="resetVisible(1)">显示</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>正序第二位</td>
-                        <td>产品介绍</td>
-                        <td><img src=""></td>
-                        <td></td>
-                        <td>
-                            <button id="edit_2" type="button" class="btn btn-warning" onclick="edit(2)">修改</button>
-                            <button id="visible_2" type="button" class="btn btn-primary" style="margin-left: 30px" onclick="resetVisible(2)">显示</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>正序第三位</td>
-                        <td>菜单介绍</td>
-                        <td><img src=""></td>
-                        <td></td>
-                        <td>
-                            <button id="edit_3" type="button" class="btn btn-warning" onclick="edit(3)">修改</button>
-                            <button id="visible_3" type="button" class="btn btn-primary" style="margin-left: 30px" onclick="resetVisible(3)">显示</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>正序第四位</td>
-                        <td>项目介绍</td>
-                        <td><img src=""></td>
-                        <td></td>
-                        <td>
-                            <button id="edit_4" type="button" class="btn btn-warning" onclick="edit(4)">修改</button>
-                            <button id="visible_4" type="button" class="btn btn-primary" style="margin-left: 30px" onclick="resetVisible(4)">显示</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>正序第五位</td>
-                        <td>顾客信息</td>
-                        <td><img src=""></td>
-                        <td></td>
-                        <td>
-                            <button id="edit_5" type="button" class="btn btn-warning" onclick="edit(5)">修改</button>
-                            <button id="visible_5" type="button" class="btn btn-primary" style="margin-left: 30px" onclick="resetVisible(5)">显示</button>
-                        </td>
-                    </tr>
+                    @for($i=0; $i < count($menus); $i++)
+                        <?php $menu = $menus[$i] ?>
+                        <tr>
+                            <th scope="row">{{$i + 1}}</th>
+                            <td>正序第{{$i + 1}}位</td>
+                            <td>{{$menu['name']}}</td>
+                            <td><img src="{{$menu['avatar']}}" width="40px"></td>
+                            <td>{{$menu['level2_contents'] == null ? '无' : $menu['level2_contents']}}</td>
+                            <td>
+                                <button id="edit_1" type="button" class="btn btn-warning" href="/menu/1/edit" onclick="edit({{$menu->id}})">修改</button>
+                                <button id={{"visible_".$menu->id}} type="button"
+                                        @if($menu->visible == 0)
+                                            class="btn btn-light"
+                                        @else
+                                            class="btn btn-primary"
+                                        @endif
+                                        style="margin-left: 30px" onclick="resetVisible({{$menu->id}})">
+                                    @if($menu->visible == 0)
+                                        不显示
+                                    @else
+                                        显示
+                                    @endif
+                                </button>
+                            </td>
+                    @endfor
                     </tbody>
                 </table>
             </div>
 
-            <h2>修改菜单</h2>
-            <p style="margin-top: 30px">
-                <label for="select" class="col-sm-3">菜单位置：</label>
-                <select id="select">
-                    <optgroup label="Option group 1">
-                        @for($i=1; $i <=5; $i++)
-                            <option value="{{$i}}">
-                                正序第{{$i}}位
-                            </option>
-                        @endfor
-                    </optgroup>
-                </select>
-            </p>
-
-            <p>
-                <label for="dirname" class="col-sm-3">菜单一级目录名称：</label>
-                <input type="text" id="dirname"></input>
-            </p>
-
-            <p>
-                <label for="icon" class="col-sm-3">图标：</label>
-                <input type="file">
-            </p>
-
-            <p>
-                <label for="dirname" class="col-sm-3">菜单二级目录名称：</label>
-                <input  class="col-sm-8" type="text" id="dirname"></input>
-            </p>
-
-            <p>
-                <label class="col-sm-3"></label>
-                <label>如果超过1个，用英文","逗号隔开</label>
-            </p>
-
-            <p>
-                <label class="col-sm-3"></label>
-                <button type="button" class="btn btn-primary">保存</button>
-                {{--<button type="button" class="btn btn-light" style="margin-left: 30px">取消</button>--}}
-            </p>
         </main>
     </div>
 
@@ -140,22 +71,28 @@
 <script type="text/javascript" src="/js/jQuery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script type="text/javascript">
-    function edit(menu_id) {
+    function edit(menu) {
         // alert(menu_id);
-        $uri = '/menu/' + menu_id +'/edit';
+        $uri = '/menus/' + menu +'/edit';
         window.location.assign($uri);
     }
 
     function resetVisible(menu_id) {
         // alert($('#visible_' + menu_id)[0]);
         var viButton = $('#visible_' + menu_id)[0];
-        if (viButton.textContent == '显示') {
+        var visible;
+        if (viButton.className == 'btn btn-primary') {
+            visible = 0;
             viButton.className = 'btn btn-light';
             viButton.textContent = '不显示';
         } else {
             viButton.className = 'btn btn-primary';
             viButton.textContent = '显示';
+            visible = 1;
         }
-
+        $uri = 'menuvisible/' + menu_id + '/' + visible;
+        $.get($uri, function(res) {
+            console.log(res);
+        });
     }
 </script>

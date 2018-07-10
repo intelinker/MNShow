@@ -11,12 +11,24 @@
 |
 */
 
-Route::get('/', 'MenuController@index');
-
-Route::resource('menus', 'MenuController');
-Route::resource('products', 'ProductController');
-Route::resource('users', 'UserController');
-Route::resource('customers', 'CustomerController');
-Route::resource('channels', 'ChannelController');
-Route::get('login', 'UserController@login');
 Route::post('signin', 'UserController@signin');
+Route::get('login', 'UserController@login')->name('login');
+Route::get('logout', 'UserController@logout');
+
+Route::group(['middleware'=>'auth'], function() {
+    Route::get('/', 'MenuController@index');
+    Route::resource('menus', 'MenuController');
+    Route::resource('products', 'ProductController');
+    Route::resource('users', 'UserController');
+    Route::resource('customers', 'CustomerController');
+    Route::resource('channels', 'ChannelController');
+    Route::get('usersearch/{name}', 'UserController@search');
+    Route::get('productsearch/{title}/{level1}/{level2}', 'ProductController@search');
+    Route::get('menuvisible/{menuid}/{visible}', 'MenuController@setVisible');
+    Route::get('customersexport', 'CustomerController@customersExport')->name('customersexport');
+    Route::get('channelcreate0', 'ChannelController@channelCreate0');
+    Route::get('channelcreate1/{channel1}', 'ChannelController@channelCreate1');
+    Route::get('channelcreate/{level}/{channel1}/{channel2}', 'ChannelController@channelCreate');
+
+});
+

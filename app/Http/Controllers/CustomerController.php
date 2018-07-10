@@ -3,10 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\customer;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Excel;
+
 
 class CustomerController extends Controller
 {
+    private $excle;
+
+    public function __construct(Excel $excel)
+    {
+        $this->excel = $excel;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -72,6 +83,8 @@ class CustomerController extends Controller
         //
     }
 
+
+
     /**
      * Remove the specified resource from storage.
      *
@@ -82,4 +95,41 @@ class CustomerController extends Controller
     {
         //
     }
+
+    public function customersExport() {
+        return $this->excel->download(new CustomersExport('customers1'), 'customers.xlsx');
+//        (new InvoicesExport)->download('invoices.xlsx');
+//        Excel::download(new CustomersExport(), 'customers.xlsx');
+
+//        $customers = User::all();
+//        Excel::create('customers', function($excel) use($customers) {
+//            $excel->sheet('Sheet 1', function($sheet) use($customers) {
+//                $sheet->fromArray($customers);
+//            });
+//        })->export('xls');
+    }
+
+
 }
+
+    class CustomersExport implements FromView
+    {
+        private $customers;
+
+        /**
+         * CustomersExport constructor.
+         * @param $customers
+         */
+        public function __construct($customers)
+        {
+            $this->customers = $customers;
+        }
+
+
+        public function view(): View
+        {
+            return view('customer.table', [
+                'customers' => $this->customers
+            ]);
+        }
+    }

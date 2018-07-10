@@ -12,14 +12,6 @@
 
 <body class="text-center">
 
-
-
-
-@if(Session::has('login_failed'))
-    <div class="alert alert-danger" role="alert">
-        {{ Session::get('login_failed') }}
-    </div>
-@endif
 {!! Form::open(array('url'=>'signin', 'method'=>'post')) !!}
 
 {{--    {!! Form::open(['url'=>'login']) !!}--}}
@@ -34,7 +26,15 @@
                 @endforeach
             </ul>
         @endif
+
+            @if(Session::has('login_failed'))
+                <div class="alert alert-danger" role="alert">
+                    {{ Session::get('login_failed') }}
+                </div>
+            @endif
     </h5>
+
+
     <h2 class="h2 mb-5 font-weight-normal">登录冰+管理系统</h2>
 
 

@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('weight')->nullable();
             $table->string('avatar');
             $table->integer('level1');
-            $table->integer('level2');
+            $table->integer('level2')->nullable()->default(0);
             $table->timestamps();
         });
     }

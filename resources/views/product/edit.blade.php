@@ -2,11 +2,11 @@
 
 <body>
 <nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">冰+后台管理系统</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">冰+后台管理系统</a>
     {{--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">--}}
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">退出登录</a>
+            <a class="nav-link" href="/logout">退出登录</a>
         </li>
     </ul>
 </nav>
@@ -21,58 +21,101 @@
         </div>
 
         <h2>添加产品</h2>
+        {!! Form::open(array('url'=>'/products/'.$product->id, 'method'=>'put', 'files'=>true)) !!}
 
         <p style="margin-top: 30px">
-            <label for="dirname" class="col-sm-2">主标题：</label>
-            <input type="text" id="dirname"></input>
+            <label for="title" class="col-sm-2">主标题：</label>
+            {!! Form::text('title', $product->title, ['class'=>'col-sm-3', 'id'=>'title', 'required'=>'required', 'autofocus'=>'autofocus']) !!}
         </p>
 
         <p>
-            <label for="dirname" class="col-sm-2">副标题：</label>
-            <input type="text" id="dirname"></input>
+            <label for="subtitle" class="col-sm-2">副标题：</label>
+            {!! Form::text('subtitle', $product->subtitle, ['class'=>'col-sm-3', 'id'=>'subtitle']) !!}
         </p>
 
         <p>
-            <label for="dirname" class="col-sm-2">净含量：</label>
-            <input type="text" id="dirname"></input>
+            <label for="weight" class="col-sm-2">净含量：</label>
+            {!! Form::text('weight', $product->weight, ['class'=>'col-sm-3', 'id'=>'weight']) !!}
         </p>
 
         <p>
-            <label for="icon" class="col-sm-2">图标：</label>
-            <input type="file">
+            <label for="avatar" class="col-sm-2">图片：</label>
+            {!! Form::file('avatar', array('class'=>'col-md-3', 'id'=>'avatar')) !!}
+            <img id="avatar_image" width="100" src="{{$product->avatar}}"/>
         </p>
 
 
         <p>
-            <label for="select" class="col-sm-2">所属：</label>
-            <select id="select">
-                <option value="">所属一级菜单</option>
-                <optgroup label="Option group 1">
-                    @for($i=1; $i <=5; $i++)
-                        <option value="{{$i}}">
-                            正序第{{$i}}位
-                        </option>
-                    @endfor
-                </optgroup>
-            </select>
+            <label for="select" class="col-sm-2">所属一级菜单：</label>
+            {!! Form::select('level1', $menu, $product->level1) !!}
+            {{--<select id="select">--}}
+            {{--<optgroup label="所属一级菜单">--}}
+            {{--@for($i=0; $i <count($menu); $i++)--}}
+            {{--<option value="{{$i}}">--}}
+            {{--{{$menu[$i]}}--}}
+            {{--</option>--}}
+            {{--@endfor--}}
+            {{--</optgroup>--}}
+            {{--</select>--}}
+        </p>
 
-            <select id="select">
-                <option value="">所属二级菜单</option>
-                <optgroup label="Option group 1">
-                    @for($i=1; $i <=5; $i++)
-                        <option value="{{$i}}">
-                            正序第{{$i}}位
-                        </option>
-                    @endfor
-                </optgroup>
-            </select>
+        <p id="level2_container" @if(count($menu2[$product->level1]) == 0) hidden @endif>
+            <label for="select" class="col-sm-2">所属二级菜单：</label>
+            @if(count($menu2[$product->level1]) != 0)
+                {!! Form::select('level2', $menu2[$product->level1], $menu2[$product->level1][$product->level2])!!}
+            @else
+                {!! Form::select('level2', $menu2[$product->level1])!!}
+            @endif
+                {{--<select id="select">--}}
+            {{--<optgroup label="所属二级菜单">--}}
+            {{--@for($i=1; $i <=count($menu2); $i++)--}}
+            {{--<option value="{{$i}}">--}}
+            {{--正序第{{$i}}位--}}
+            {{--</option>--}}
+            {{--@endfor--}}
+            {{--</optgroup>--}}
+            {{--</select>--}}
         </p>
 
         <p>
-            <label class="col-sm-1"></label>
-            <button type="button" class="btn btn-primary">保存</button>
-            <button type="button" class="btn btn-light" style="margin-left: 100px">取消</button>
+            {!! Form::submit('保存', ['class' => 'btn btn-primary', 'style' => 'margin-left:30px']) !!}
+            <button type="button" class="btn btn-light" style="margin-left: 250px" onclick="javascript:history.back(-1);">取消</button>
         </p>
     </main>
 </div>
 </body>
+<script type="text/javascript" src="/js/jQuery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    document.getElementsByName('level1')[0].onchange = function () {
+        var menu2 = "<?php echo urlencode(json_encode($menu2)); ?>";
+        menu2 = eval(decodeURIComponent(menu2));
+        var submenu = menu2[$(this).val()];
+        var level2_container = document.getElementById('level2_container');
+        var level2 = document.getElementsByName('level2')[0];
+        if (submenu.length > 0) {
+            level2_container.hidden = false;
+            level2.innerHTML = "";
+            for (var i=0; i<submenu.length; i++) {
+                var option = document.createElement('option');
+                option.value = i;
+                option.textContent = submenu[i];
+                level2.appendChild(option);
+            }
+            // console.log(level2_container);
+        } else {
+            level2_container.hidden = true;
+        }
+    }
+
+    document.getElementById("avatar").onchange = function () {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            document.getElementById("avatar_image").src = e.target.result;
+        };
+
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+    };
+</script>

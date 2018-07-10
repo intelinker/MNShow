@@ -14,14 +14,17 @@
                     产品内容管理
                 </a>
             </li>
+
+            @if(Auth::user()->authority->id == 0)
+                <li class="nav-item">
+                    <a class="nav-link {{ (Request::is('user*') ? 'active' : '') }}" href="/users">
+                        <span data-feather="users"></span>
+                        登录人员管理
+                    </a>
+                </li>
+            @endif
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('user*') ? 'active' : '') }}" href="/users">
-                    <span data-feather="users"></span>
-                    登录人员管理
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ ((Request::is('customer*') || Request::is('channels*')) ? 'active' : '') }}" href="/customers">
+                <a class="nav-link {{ ((Request::is('customer*') || Request::is('channel*')) ? 'active' : '') }}" href="/customers">
                     <span data-feather="bar-chart-2"></span>
                     顾客信息管理
                 </a>

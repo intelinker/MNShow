@@ -19,9 +19,12 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('cellphone')->unique();
             $table->string('password');
-            $table->integer('authority_id')->references('id')->on('authorities')->onDelete('cascade');
-//            $table->rememberToken();
-            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('vipass');
+            $table->integer('authority_id')->references('id')->on('authorities')->onDelete('cascade')->default(1);
+            $table->rememberToken();
+//            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamps();
+
         });
     }
 

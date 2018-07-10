@@ -2,11 +2,11 @@
 
 <body>
 <nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">冰+后台管理系统</a>
-    <input class="form-control form-control w-100" type="text" placeholder="搜索" aria-label="Search">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">冰+后台管理系统</a>
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">退出登录</a>
+            {{--<label>{{Auth::user()->name}}</label>--}}
+            <a class="nav-link" href="/logout">退出登录</a>
         </li>
     </ul>
 </nav>
@@ -20,14 +20,14 @@
             <h1 class="h2">登录人员管理</h1>
         </div>
 
-        <h2>菜单列表</h2>
+        <h2>登录人员列表</h2>
         <p>
-            <input type="text" placeholder="姓名">
-            <button type="button" class="btn btn-primary col-sm-1" style="margin-left: 20px">搜索</button>
+            <input id="search_text" type="text" placeholder="姓名">
+            <button type="button" class="btn btn-primary col-sm-1" style="margin-left: 20px" onclick="search()">搜索</button>
             <button type="button" class="btn btn-danger col-sm-1" style="margin-right: 30px; float:right" onclick="create()">添加</button>
         </p>
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">序号</th>
@@ -40,46 +40,32 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>正序第一位</td>
-                    <td>关于我们</td>
-                    <td><img src=""></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>正序第二位</td>
-                    <td>产品介绍</td>
-                    <td><img src=""></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>正序第三位</td>
-                    <td>菜单介绍</td>
-                    <td><img src=""></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>正序第四位</td>
-                    <td>项目介绍</td>
-                    <td><img src=""></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>正序第五位</td>
-                    <td>顾客信息</td>
-                    <td><img src=""></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+
+                @for($i=0; $i < count($users); $i++)
+                    @php $user = $users[$i]; @endphp
+                    <tr>
+                        {!! Form::open(array('url'=>'/users/'.$user->id, 'method'=>'delete')) !!}
+                        <th scope="row">{{$i + 1}}</th>
+                        <td>{{$user['name']}}</td>
+                        <td>{{$user['cellphone']}}</td>
+                        <td>{{$user['vipass']}}</td>
+                        <td>{{$user->authority->name}}</td>
+                        <td>{{$user->created_at}}</td>
+                        <td>
+                            <button id={{"edit_".$i}} type="button" class="btn btn-warning" onclick="edit({{$user['id']}})">修改</button>
+                            {!! Form::submit('删除', ['class' => 'btn btn-light', 'style' => 'margin-left:30px']) !!}
+                        </td>
+                        {!! Form::close() !!}
+                    </tr>
+                @endfor
+                {{--<tr>--}}
+                    {{--<th scope="row">2</th>--}}
+                    {{--<td>正序第二位</td>--}}
+                    {{--<td>产品介绍</td>--}}
+                    {{--<td><img src=""></td>--}}
+                    {{--<td></td>--}}
+                    {{--<td></td>--}}
+                {{--</tr>--}}
                 </tbody>
             </table>
         </div>
@@ -94,7 +80,24 @@
         window.location.assign($uri);
     }
 
-    function delProduct(product) {
+    function search() {
+        // alert($('#search_text').val());
+        var content = $('#search_text').val();
+        if (content != null && content.length > 0) {
+            $uri = '/usersearch/' + content;
+            window.location.assign($uri);
+        } else {
+            alert("请输入搜索内容");
+        }
+
+    }
+
+    function edit(user) {
+        $uri = '/users/' + user + '/edit';
+        window.location.assign($uri);
+    }
+
+    function del(product) {
         $uri = '/products/create';
         window.location.assign($uri);
 

@@ -1,11 +1,13 @@
 @extends('layouts.headercontent')
 
 <body>
+<link href="/css/datetimepicker.css" rel="stylesheet">
+
 <nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">冰+后台管理系统</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">冰+后台管理系统</a>
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">退出登录</a>
+            <a class="nav-link" href="/logout">退出登录</a>
         </li>
     </ul>
 </nav>
@@ -22,7 +24,7 @@
         <h2>顾客信息</h2>
         <div>
             <input type="text" placeholder="顾客名称">
-            <input type="text" placeholder="拜访时间">
+            <input type="text" placeholder="拜访时间" class="form_datetime" readonly>
             <select id="select">
                 <optgroup label="渠道分类一">
                     @for($i=1; $i <=5; $i++)
@@ -53,15 +55,16 @@
         </div>
         <div>
             <input type="text" placeholder="录入人">
-            <input type="text" placeholder="签订合同时间">
+            <input type="text" placeholder="签订合同时间" class="form_datetime" readonly>
             <input type="text" placeholder="签订合同期限">
             <input type="text" placeholder="合作产品">
-            <button type="button" class="btn btn-primary col-sm-1" style="margin-left: 20px">搜索</button>
+            <button type="button" class="btn btn-primary" style="margin-left: 20px">搜索</button>
+        </div>
 
-            <button type="button" class="btn btn-warning col-sm-1" style="margin-right: 30px; float:right" onclick="channels()">渠道管理</button>
-            <button type="button" class="btn btn-danger col-sm-1" style="margin-right: 30px; float:right" onclick="create()">添加顾客</button>
-
-
+        <div style="margin-top:30px; margin-bottom: 80px">
+            <button type="button" class="btn btn-warning" style="margin-right: 30px; float:right" onclick="channels()">渠道管理</button>
+            {{--<button type="button" class="btn btn-danger col-sm-1" style="margin-right: 30px; float:right" onclick="create()">添加顾客</button>--}}
+            <button type="button" class="btn btn-success" style="margin-right: 30px; float:right" onclick="exportExcel()">报表导出</button>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered">
@@ -183,9 +186,17 @@
 </body>
 <script type="text/javascript" src="/js/jQuery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
+<script src="/js/bootstrap-datetimepicker.js"></script>
+
 <script type="text/javascript">
-    function create(product) {
-        $uri = '/customers/create';
+    // $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii',minView: "month", language: 'cn'});
+    $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd',minView: "month", language: 'cn', autoclose: 1});
+
+    function exportExcel() {
+        $uri = '/customersexport';
+        // $.get($uri, function(res) {
+        //     // console.log(res);
+        // });
         window.location.assign($uri);
     }
 
