@@ -22,35 +22,33 @@
         </div>
 
         <h2>顾客信息</h2>
+        {!! Form::open(array('url'=>'customersearch', '')) !!}
         <div>
             <input type="text" placeholder="顾客名称">
             <input type="text" placeholder="拜访时间" class="form_datetime" readonly>
             <select id="select">
-                <optgroup label="渠道分类一">
-                    @for($i=1; $i <=5; $i++)
-                        <option value="{{$i}}">
-                            正序第{{$i}}位
-                        </option>
+                    @for($i=1; $i <=count($channels); $i++)
+                        <?php $channel = $channels[$i]; ?>
+                        @if($channel->level == 0)
+                                <option value="{{$i}}">
+                                    正序第{{$i}}位
+                                </option>
+                            @endif
                     @endfor
-                </optgroup>
             </select>
             <select id="select">
-                <optgroup label="渠道分类二">
                     @for($i=1; $i <=5; $i++)
                         <option value="{{$i}}">
                             正序第{{$i}}位
                         </option>
                     @endfor
-                </optgroup>
             </select>
             <select id="select">
-                <optgroup label="渠道分类三">
                     @for($i=1; $i <=5; $i++)
                         <option value="{{$i}}">
                             正序第{{$i}}位
                         </option>
                     @endfor
-                </optgroup>
             </select>
         </div>
         <div>
@@ -60,14 +58,14 @@
             <input type="text" placeholder="合作产品">
             <button type="button" class="btn btn-primary" style="margin-left: 20px">搜索</button>
         </div>
-
+        {!! Form::close() !!}
         <div style="margin-top:30px; margin-bottom: 80px">
             <button type="button" class="btn btn-warning" style="margin-right: 30px; float:right" onclick="channels()">渠道管理</button>
             {{--<button type="button" class="btn btn-danger col-sm-1" style="margin-right: 30px; float:right" onclick="create()">添加顾客</button>--}}
             <button type="button" class="btn btn-success" style="margin-right: 30px; float:right" onclick="exportExcel()">报表导出</button>
         </div>
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">序号</th>

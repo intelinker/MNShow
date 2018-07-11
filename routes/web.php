@@ -29,6 +29,6 @@ Route::group(['middleware'=>'auth'], function() {
     Route::get('channelcreate0', 'ChannelController@channelCreate0');
     Route::get('channelcreate1/{channel1}', 'ChannelController@channelCreate1');
     Route::get('channelcreate/{level}/{channel1}/{channel2}', 'ChannelController@channelCreate');
-
+    Route::post('customersearch', 'CustomerController@search');
 });
 

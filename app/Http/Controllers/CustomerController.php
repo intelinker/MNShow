@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Channel;
 use App\customer;
 use App\User;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customer.index');
+
+        return view('customer.index', ['channels'=>Channel::all()]);
     }
 
     /**
@@ -94,6 +96,10 @@ class CustomerController extends Controller
     public function destroy(customer $customer)
     {
         //
+    }
+
+    public function search(Request $request) {
+
     }
 
     public function customersExport() {
