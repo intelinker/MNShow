@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('signin', 'UserController@apiSignin');
+//Route::get('syncabout', 'ProductController@syncAbout');
+//Route::get('syncmenus', 'MenuController@syncData');
+Route::get('syncproducts/{level1}', 'ProductController@syncProducts');
+//Route::get('syncmenuproducts', 'ProductController@syncMenuProducts');

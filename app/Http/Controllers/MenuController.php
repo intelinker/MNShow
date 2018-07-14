@@ -113,4 +113,14 @@ class MenuController extends Controller
         else
             return null;
     }
+
+
+
+    public function syncData() {
+        $menus = Menu::all();
+        if (count($menus) > 0) {
+            return ['success' => true, 'menus' => $menus];
+        } else
+            return ['success' => false];
+    }
 }

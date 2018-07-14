@@ -26,7 +26,8 @@
         <div>
             <input type="text" placeholder="顾客名称">
             <input type="text" placeholder="拜访时间" class="form_datetime" readonly>
-            <select id="select">
+            <select id="level1" @if(count($channels) < 0) hidden @endif>
+                <option value="10000">所有渠道一</option>
                     @for($i=0; $i <count($channels); $i++)
                         <?php $channel = $channels[$i]; ?>
                         @if($channel->level == 0)
@@ -36,19 +37,12 @@
                             @endif
                     @endfor
             </select>
-            <select id="select">
-                    @for($i=1; $i <=5; $i++)
-                        <option value="{{$i}}">
-                            正序第{{$i}}位
-                        </option>
-                    @endfor
+            <select id="level2" hidden>
+                <option value="20000">所属渠道二</option>
+
             </select>
-            <select id="select">
-                    @for($i=1; $i <=5; $i++)
-                        <option value="{{$i}}">
-                            正序第{{$i}}位
-                        </option>
-                    @endfor
+            <select id="level3" hidden>
+                <option value="30000">所属渠道三</option>
             </select>
         </div>
         <div>
@@ -193,6 +187,62 @@
 <script type="text/javascript">
     // $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii',minView: "month", language: 'cn'});
     $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd',minView: "month", language: 'cn', autoclose: 1});
+
+    $('#level1')[0].onchange = function () {
+        var level2 = $('#level2')[0];
+        var level3 = $('#level3')[0];
+        level2.innerHTML = "";
+        if ($(this).val() == 10000) {
+            level2.hidden = true;
+            level3.hidden = true;
+        } else {
+            level2.hidden = false;
+            var option = document.createElement('option');
+            option.value = 20000;
+            option.textContent = '所属渠道二';
+            level2.appendChild(option);
+            var channels = "<?php echo urlencode(json_encode($channels)); ?>";
+            channels = eval(decodeURIComponent(channels));
+            for (var i=0; i<channels.length; i++) {
+                var channel = channels[i];
+                if (channel['level'] == 1 && channel['level1_id'] == $(this).val()) {
+                    var option = document.createElement('option');
+                    option.value = channel['id'];
+                    option.textContent = channel['name'];
+                    level2.appendChild(option);
+                }
+            }
+        }
+    }
+
+    $('#level2')[0].onchange = function () {
+        var level1 = $('#level1');
+        var level3 = $('#level3')[0];
+        level3.innerHTML = "";
+        if ($(this).val() == 20000) {
+            level3.hidden = true;
+        } else {
+            level3.hidden = false;
+            var option = document.createElement('option');
+            option.value = 30000;
+            option.textContent = '所属渠道三';
+            level3.appendChild(option);
+            var channels = "<?php echo urlencode(json_encode($channels)); ?>";
+            channels = eval(decodeURIComponent(channels));
+            for (var i=0; i<channels.length; i++) {
+                var channel = channels[i];
+                level2.hidden = false;
+                // alert('level:' + channel['level'] + '/ level1_id:' + )
+                if (channel['level'] == 2 && channel['level1_id'] == level1.val() && channel['level2_id'] == $(this).val()) {
+                    // alert(level2);
+                    var option = document.createElement('option');
+                    option.value = channel['id'];
+                    option.textContent = channel['name'];
+                    level3.appendChild(option);
+                }
+            }
+        }
+    }
 
     function exportExcel() {
         $uri = '/customersexport';

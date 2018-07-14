@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except'=>['login', 'signin']]);
+        $this->middleware('auth', ['except'=>['login', 'signin', 'apiSignin']]);
     }
 
     /**
@@ -146,6 +146,22 @@ class UserController extends Controller
             array_push($authes, $auth['name']);
         }
         return $authes;
+    }
+
+
+
+//    API functions
+    public function apiSignin(Request $request) {
+        $users = User::select('name', 'cellphone', 'authority_id')
+            ->where('cellphone', $request->get('cellphone'))
+            ->where('vipass', $request->get('password'))
+            ->get();
+//        dd($users);
+        if (count($users) > 0) {
+            return ['success'=>true, 'user' => $users[0]];
+        } else {
+            return ['success'=>false];
+        }
     }
 
 }

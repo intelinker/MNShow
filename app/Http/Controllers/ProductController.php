@@ -152,4 +152,26 @@ class ProductController extends Controller
 
         return $menu2;
     }
+
+//    public function syncAbout() {
+//        $products = product::where('level1_seq', 0)->get();
+//        $menus = Menu::all();
+//        if (count($menus) > 0) {
+//            return ['success' => true, 'menus' => $menus, 'products' => $products];
+//        } else
+//            return ['success' => false];
+//    }
+
+    public function syncProducts($level1) {
+        $products = product::where('level11', $level1)->get();
+        $menus = Menu::all();
+        if (count($menus) > 0) {
+            return ['success' => true, 'menus' => $menus, 'products' => $products];
+        } else
+            return ['success' => false];
+    }
+
+    public function syncMenuProducts() {
+
+    }
 }
