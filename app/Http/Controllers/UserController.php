@@ -152,7 +152,7 @@ class UserController extends Controller
 
 //    API functions
     public function apiSignin(Request $request) {
-        $users = User::select('name', 'cellphone', 'authority_id')
+        $users = User::select('id','name', 'cellphone', 'authority_id')
             ->where('cellphone', $request->get('cellphone'))
             ->where('vipass', $request->get('password'))
             ->get();
