@@ -115,6 +115,30 @@ class CustomerController extends Controller
 //        })->export('xls');
     }
 
+    public function apiCustomers(Request $request) {
+        $key = $request->get('key');
+        $customers = null;
+        if ($key != null) {
+            $customers = customer::where('name', 'like', '%'.$key.'%')->get();
+        } else {
+            $customers = customer::all();
+        }
+        if (count($customers) > 0) {
+            return ['success' => true, 'customers' => $customers];
+        } else {
+            return ['success' => false];
+        }
+    }
+
+    public function createcustomer(Request $request) {
+        $customer = customer::create($request);
+        if ($request)
+        if ($customer != null) {
+            return ['success' => true, 'customers' => customer::all()];
+        } else
+            return ['success' => false];
+    }
+
 
 }
 

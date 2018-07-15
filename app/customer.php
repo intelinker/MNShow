@@ -12,4 +12,8 @@ class customer extends Model
     public function channel() {
         return $this->hasMany('App\Channel');
     }
+
+    public function image() {
+        return $this->hasMany("App\CustomerImage", "customer_id", "id");
+    }
 }

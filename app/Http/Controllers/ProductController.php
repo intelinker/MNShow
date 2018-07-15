@@ -5,9 +5,23 @@ namespace App\Http\Controllers;
 use App\Menu;
 use App\product;
 use Illuminate\Http\Request;
+use Pbmedia\LaravelFFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
 
 class ProductController extends Controller
 {
+    private $ffmpeg;
+
+    /**
+     * ProductController constructor.
+     * @param $ffmpeg
+     */
+    public function __construct(FFMpeg $ffmpeg)
+    {
+        $this->ffmpeg = $ffmpeg;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -43,7 +57,7 @@ class ProductController extends Controller
 
         $product = product::create(array_merge($request->except('avatar', '_token'), ['avatar'=>$avatar]));
 
-        return view('product.index', ['products' => product::all(), 'menu2'=>$this->getMenu2()]);
+        return view('product.index', ['products' => product::all(), 'menu'=>$this->getMenu1(), 'menu2'=>$this->getMenu2()]);
     }
 
     /**
@@ -85,7 +99,7 @@ class ProductController extends Controller
         } else {
             $update = $product->update($request->except('avatar'));
         }
-        return view('product.index', ['products' => product::all(), 'menu2'=>$this->getMenu2()]);
+        return view('product.index', ['products' => product::all(), 'menu'=>$this->getMenu1(), 'menu2'=>$this->getMenu2()]);
     }
 
     /**
@@ -99,7 +113,7 @@ class ProductController extends Controller
 //        dd($product);
         $product->delete();
 
-        return view('product.index', ['products' => product::all(), 'menu2'=>$this->getMenu2()]);
+        return view('product.index', ['products' => product::all(), 'menu'=>$this->getMenu1(), 'menu2'=>$this->getMenu2()]);
     }
 
     public function search($title, $level1, $level2) {
@@ -122,11 +136,25 @@ class ProductController extends Controller
         $destPath = 'images/product/';
         $fileName = $file->getClientOriginalName();
         $saveFile = $file->move($destPath, $fileName);
+        $fileType = substr(strrchr($fileName, '.'), 1);
+        $justName = explode(".", $fileName)[0];
+        if ($fileType == "mp4" || $fileType == "mpeg") {
+            $video = $this->ffmpeg->fromDisk('video')->open($fileName);
+
+            $duration = $video->getDurationInSeconds();
+//                        dd($duration);
+
+            $video->getFrameFromSeconds($duration / 3)->export()->toDisk('video')->save($justName.".jpg");
+        }
 //        dd($saveFile);
         if ($saveFile != null)
             return '/'.$destPath.$fileName;
         else
             return null;
+    }
+
+    private function uploadVideo($file) {
+
     }
 
     private function getMenu1() {
