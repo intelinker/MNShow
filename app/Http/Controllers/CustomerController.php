@@ -132,11 +132,123 @@ class CustomerController extends Controller
 
     public function createcustomer(Request $request) {
         $customer = customer::create($request);
-        if ($request)
+        $files = $_FILES['image'];
+        if (count($files) > 0) {
+            $upload = $this->uploadfiles($files);
+            if (is_string($upload)) {
+                return ['success' => false, 'error' => $upload];
+            }
+        }
         if ($customer != null) {
             return ['success' => true, 'customers' => customer::all()];
         } else
-            return ['success' => false];
+            return ['success' => false, 'error' => 'no customer found!'];
+    }
+
+    function uploadfiles($files, $path="images/customer",
+                        $allowExt = array('png','jpg','jpeg','gif','mmp','qnmlgb'),
+                        $maxSize=1048576,$imgFlag=true){
+
+        if (! file_exists($path)) {
+            mkdir($path,0777,true);
+        }
+        $i = 0;
+        $infoArr = buildInfo();
+        foreach ($infoArr as $val) {
+            if ($val['error'] === UPLOAD_ERR_OK) {
+
+                $ext = getExt($val['name']);
+                for($j=0;$j<count($allowExt);$j++){
+                    if($ext == $allowExt[$j]){
+                        $m = "此文件适合上传标准";
+                        $h = $m;
+                    }else {
+                        $m = "此文件不可以被上传";
+                    }
+                }
+                if($h){
+                    $mes = "文件格式正确";
+                }else{
+                    $mes = "文件格式错误";
+                    exit;
+                }
+                if($val['size']>$maxSize){
+                    $mes = "文件太大了";
+                    exit;
+                }
+                if($imgFlag){
+                    $result = getimagesize($val['tmp_name']);
+                    if(!$result){
+                        $mes = "您上传的不是一个真正图片";
+                        exit;
+                    }
+                }
+                if(!is_uploaded_file($val['tmp_name'])){
+                    $mes = "不是通过httppost传输的";
+                    exit;
+                }
+
+                $realName = getUniName().".".$ext;
+                $destination = $path."/".$realName;
+                if(move_uploaded_file($val['tmp_name'], $destination)){
+                    $val['name'] = $realName;
+                    unset($val['error'],$val['tmp_name'],$val['size'],$val['type']);
+
+                    $uploadedFiles[$i]=$val;//?????????
+                    $i++;
+                }
+            }else {
+                switch ($val['error']) {
+                    case 1: // UPLOAD_ERR_INI_SIZE
+                        $mes = "超过配置文件中上传文件的大小";
+                        break;
+                    case 2: // UPLOAD_ERR_FORM_SIZE
+                        $mes = "超过表单中配置文件的大小";
+                        break;
+                    case 3: // UPLOAD_ERR_PARTIAL
+                        $mes = "文件被部分上传";
+                        break;
+                    case 4: // UPLOAD_ERR_NO_FILE
+                        $mes = "没有文件被上传";
+                        break;
+                    case 6: // UPLOAD_ERR_NO_TMP_DIR
+                        $mes = "没有找到临事文件目录";
+                        break;
+                    case 7: // UPLOAD_ERR_CANT_WRITE
+                        $mes = "文件不可写";
+                        break;
+                    case 8: // UPLOAD_ERR_EXTENSION
+                        $mes = "php扩展程序中断了上传程序";
+                        break;
+                }
+                echo $mes;
+            }
+        }
+
+        return $uploadedFiles;
+    }
+
+    function buildInfo(){
+//     $info = $_FILES;
+        $i = 0;
+        foreach ($_FILES as $v){//三维数组转换成2维数组
+            if(is_string($v['name'])){ //单文件上传
+                $info[$i] = $v;
+                $i++;
+            }else{ // 多文件上传
+                foreach ($v['name'] as $key=>$val){//2维数组转换成1维数组
+                    //取出一维数组的值，然后形成另一个数组
+                    //新的数组的结构为：info=>i=>('name','size'.....)
+                    $info[$i]['name'] = $v['name'][$key];
+                    $info[$i]['size'] = $v['size'][$key];
+                    $info[$i]['type'] = $v['type'][$key];
+                    $info[$i]['tmp_name'] = $v['tmp_name'][$key];
+                    $info[$i]['error'] = $v['error'][$key];
+                    $i++;
+                }
+            }
+        }
+        return $info;
     }
 
 
