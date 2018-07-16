@@ -18,12 +18,12 @@ class CreateCustomersTable extends Migration
             $table->string('name');
             $table->integer('store_count');
             $table->integer('channel_category1')->default(1);
-            $table->integer('channel_category2')->default(1);
-            $table->integer('channel_category3')->default(1);
+            $table->integer('channel_category2')->nullable()->default(0);
+            $table->integer('channel_category3')->nullable()->default(0);
             $table->string('visit_time')->nullable();
             $table->string('contract_time')->nullable();
             $table->string('contract_duration')->nullable();
-            $table->string('corpration_products')->nullable();
+            $table->integer('corpration_products')->references('id')->on('products')->onDelete('cascade')->nullable();
             $table->string('progress')->nullable();
             $table->integer('created_by')->references('id')->on('users')->onDelete('cascade');
 //            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));

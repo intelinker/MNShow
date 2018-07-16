@@ -94,7 +94,7 @@ class ProductController extends Controller
         $avatar = $request['avatar'];//$request->file('avatar');
 //                dd($avatar);
         if ($avatar != null) {
-            $avatar = $this->uploadFile($avatar);
+            $avatar = $this->uploadFile($avatar, "product");
             $update = $product->update(array_merge($request->except('avatar'), ['avatar'=>$avatar]));
         } else {
             $update = $product->update($request->except('avatar'));
@@ -131,27 +131,6 @@ class ProductController extends Controller
         return view('product.index', ['products' => $products, 'menu'=>$this->getMenu1(), 'menu2'=>$this->getMenu2()]);
     }
 
-
-    private function uploadFile($file) {
-        $destPath = 'images/product/';
-        $fileName = $file->getClientOriginalName();
-        $saveFile = $file->move($destPath, $fileName);
-        $fileType = substr(strrchr($fileName, '.'), 1);
-        $justName = explode(".", $fileName)[0];
-        if ($fileType == "mp4" || $fileType == "mpeg") {
-            $video = $this->ffmpeg->fromDisk('video')->open($fileName);
-
-            $duration = $video->getDurationInSeconds();
-//                        dd($duration);
-
-            $video->getFrameFromSeconds($duration / 3)->export()->toDisk('video')->save($justName.".jpg");
-        }
-//        dd($saveFile);
-        if ($saveFile != null)
-            return '/'.$destPath.$fileName;
-        else
-            return null;
-    }
 
     private function uploadVideo($file) {
 

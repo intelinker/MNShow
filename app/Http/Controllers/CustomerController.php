@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\customer;
+use App\CustomerImage;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
@@ -27,8 +28,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
-
-        return view('customer.index', ['channels'=>Channel::all()]);
+        $customers = customer::all();
+//        foreach ($customers as $customer) {
+//            if ($customer->image() != null) {
+////                dd(gettype($customer->image()));
+//            }
+//        }
+        return view('customer.index', ['customers'=>$customers, 'channels'=>Channel::all()]);
     }
 
     /**
@@ -96,11 +102,12 @@ class CustomerController extends Controller
      */
     public function destroy(customer $customer)
     {
-        //
+        $customer->delete();
+        return view('customer.index', ['customers'=>customer::all(), 'channels'=>Channel::all()]);
     }
 
     public function search(Request $request) {
-
+        dd($request);
     }
 
     public function customersExport() {
@@ -134,15 +141,27 @@ class CustomerController extends Controller
     public function createcustomer(Request $request) {
 //        $customer = new customer();
 
-//        dd($this->getRequestArray($request));
 
         $customer = customer::create($this->getRequestArray($request));
-        $files = $_FILES['image'];
+        $files = $request->file('image');//$_FILES['image'];
         if (count($files) > 0) {
-            $upload = $this->uploadfiles($files);
-            if (is_string($upload)) {
-                return ['success' => false, 'error' => $upload];
+            $upload = null;
+            foreach ($files as $file) {
+                $fileName = $file->getClientOriginalName();
+//                        dd($file);
+                CustomerImage::create([
+                    'name' => $fileName,
+                    'link' => '/images/customer/'.$fileName,
+                    'type' => 0,
+                    'order' => 0,
+                    'customer_id' => $customer->id,
+                ]);
+                $this->uploadFile($file, "customer");
             }
+//            $upload = $this->uploadfiles($files);
+//            if (is_string($upload)) {
+//                return ['success' => false, 'error' => $upload];
+//            }
         }
         if ($customer != null) {
             return ['success' => true, 'customers' => customer::all()];
@@ -191,8 +210,8 @@ class CustomerController extends Controller
             mkdir($path,0777,true);
         }
         $i = 0;
-        $infoArr = buildInfo();
-        foreach ($infoArr as $val) {
+//        $infoArr = buildInfo();
+        foreach ($this->buildInfo($files) as $val) {
             if ($val['error'] === UPLOAD_ERR_OK) {
 
                 $ext = getExt($val['name']);
@@ -266,7 +285,7 @@ class CustomerController extends Controller
         return $uploadedFiles;
     }
 
-    function buildInfo(){
+    function buildInfo($info){
 //     $info = $_FILES;
         $i = 0;
         foreach ($_FILES as $v){//三维数组转换成2维数组

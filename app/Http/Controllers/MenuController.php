@@ -77,7 +77,7 @@ class MenuController extends Controller
         $avatar = $request['avatar'];//$request->file('avatar');
 //                dd($avatar);
         if ($avatar != null) {
-            $avatar = $this->uploadFile($avatar);
+            $avatar = $this->uploadFile($avatar, "menu");
             $update = $menu->update(array_merge($request->except('avatar'), ['avatar'=>$avatar]));
         } else {
             $update = $menu->update($request->except('avatar'));
@@ -102,19 +102,6 @@ class MenuController extends Controller
         $menu = Menu::findorFail($menuid);
         $menu->update(['visible'=>$visible]);
     }
-
-    private function uploadFile($file) {
-        $destPath = 'images/menu/';
-        $fileName = $file->getClientOriginalName();
-        $saveFile = $file->move($destPath, $fileName);
-//        dd($saveFile);
-        if ($saveFile != null)
-            return '/'.$destPath.$fileName;
-        else
-            return null;
-    }
-
-
 
     public function syncData() {
         $menus = Menu::all();
