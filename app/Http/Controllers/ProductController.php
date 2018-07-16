@@ -170,7 +170,7 @@ class ProductController extends Controller
 //    }
 
     public function syncProducts($level1) {
-        $products = product::where('level11', $level1)->get();
+        $products = product::where('level1', $level1)->get();
         $menus = Menu::all();
         if (count($menus) > 0) {
             return ['success' => true, 'menus' => $menus, 'products' => $products];
