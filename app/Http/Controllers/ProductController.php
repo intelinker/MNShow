@@ -52,7 +52,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $avatar = $request['avatar'];
-        $avatar = $this->uploadFile($avatar);
+        $avatar = $this->uploadFile($avatar, "product");
 //                        dd(array_merge($request->except('avatar', '_token'), ['avatar'=>$avatar]));
 
         $product = product::create(array_merge($request->except('avatar', '_token'), ['avatar'=>$avatar]));
