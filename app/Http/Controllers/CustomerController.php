@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Excel;
+use function PHPSTORM_META\type;
 
 
 class CustomerController extends Controller
@@ -131,7 +132,11 @@ class CustomerController extends Controller
     }
 
     public function createcustomer(Request $request) {
-        $customer = customer::create($request);
+//        $customer = new customer();
+
+//        dd($this->getRequestArray($request));
+
+        $customer = customer::create($this->getRequestArray($request));
         $files = $_FILES['image'];
         if (count($files) > 0) {
             $upload = $this->uploadfiles($files);
@@ -143,6 +148,39 @@ class CustomerController extends Controller
             return ['success' => true, 'customers' => customer::all()];
         } else
             return ['success' => false, 'error' => 'no customer found!'];
+    }
+
+    private function object_to_array($obj) {
+        $obj = (array)$obj;
+        foreach ($obj as $k => $v) {
+            if (gettype($v) == 'resource') {
+                return;
+            }
+            if (gettype($v) == 'object' || gettype($v) == 'array') {
+                $obj[$k] = (array)$this->object_to_array($v);
+            }
+        }
+
+        return $obj;
+    }
+
+    private function getRequestArray($request) {
+        foreach($request->request as $key=>$value) {
+            $object[$key] = $this->object_array($value);
+        }
+        return $this->object_to_array(json_decode(json_encode($object)));
+
+    }
+
+    function object_array($array) {
+        if(is_object($array)) {
+            $array = (array)$array;
+        } if(is_array($array)) {
+            foreach($array as $key=>$value) {
+                $array[$key] = $this->object_array($value);
+            }
+        }
+        return $array;
     }
 
     function uploadfiles($files, $path="images/customer",
