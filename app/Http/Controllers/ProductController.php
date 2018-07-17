@@ -40,6 +40,8 @@ class ProductController extends Controller
      */
     public function create()
     {
+//        return view('product.create', ['menu'=> Menu::all()]);
+//        dd($this->getMenu2());
         return view('product.create', ['menu'=>$this->getMenu1(), 'menu2'=>$this->getMenu2()]);
     }
 

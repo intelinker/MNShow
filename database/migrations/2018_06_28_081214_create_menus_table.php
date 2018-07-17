@@ -19,7 +19,7 @@ class CreateMenusTable extends Migration
             $table->string('term_id')->nullable();
             $table->integer('level1_seq');
             $table->integer('level2_seq')->default(0);
-            $table->string('level2_contens')->nullable();
+            $table->string('level2_contents')->nullable();
             $table->tinyInteger('visible')->default(1);
             $table->string('avatar');
 
