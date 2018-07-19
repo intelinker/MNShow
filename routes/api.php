@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('signin', 'UserController@apiSignin');
-//Route::get('syncabout', 'ProductController@syncAbout');
+Route::get('channels', 'ChannelController@loadChannels');
 //Route::get('syncmenus', 'MenuController@syncData');
 Route::get('syncproducts/{level1}', 'ProductController@syncProducts');
 Route::post('customers', 'CustomerController@customers@apiCustomers');

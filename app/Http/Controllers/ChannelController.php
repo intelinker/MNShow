@@ -181,4 +181,8 @@ class ChannelController extends Controller
 
         return $levels;
     }
+
+    public function loadChannels() {
+        return ['success' => true, 'channels' => Channel::all()];
+    }
 }
