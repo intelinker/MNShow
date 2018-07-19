@@ -99,7 +99,7 @@
                             @endif
                         </td>
                         {{--<td>合作进展</td>--}}
-                        <td>{{ $customer->creator->name }}</td>
+                        <td>@if($customer->channel1 != null) {{ $customer->creator->name }} @else 该渠道不存在 @endif</td>
                         <td>
                             {!! Form::submit('删除', ['class' => 'btn btn-light']) !!}
                         </td>
