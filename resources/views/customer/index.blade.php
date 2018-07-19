@@ -80,7 +80,7 @@
                         <th scope="row">{{$i}}</th>
                         <td>{{$customer->name}}</td>
                         <td>{{$customer->store_count}}</td>
-                        <td>{{$customer->channel1->name}}</td>
+                        <td>@if($customer->channel1 != null) {{$customer->channel1->name}} @else 该渠道不存在 @endif</td>
                         <td>@if($channel2 != null) {{$channel2->name}} @else - @endif</td>
                         <td>@if($channel3 != null) {{$channel3->name}} @else - @endif</td>
                         <td>@if($customer->image != null && count($customer->image) > 0) <img width="50px" src="{{$customer->image[0]->link}}"> @endif</td>

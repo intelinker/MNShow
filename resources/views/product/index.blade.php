@@ -32,7 +32,7 @@
                 @endfor
             </select>
 
-            <select id="level2" name="level2" style="margin-left: 20px"  @if(count($menu2[0]) == 0) hidden @endif>
+            <select id="level2" name="level2" style="margin-left: 20px"   hidden>
                 @if(count($menu2[0]) == 0)
                     @for($i=0; $i <count($menu2[0]); $i++)
                         <option value="{{$i}}">

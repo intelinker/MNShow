@@ -16,8 +16,8 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('store_count');
-            $table->integer('channel_category1')->default(1);
+            $table->integer('store_count')->nullable()->default(0);
+            $table->integer('channel_category1')->nullable()->default(0);
             $table->integer('channel_category2')->nullable()->default(0);
             $table->integer('channel_category3')->nullable()->default(0);
             $table->string('visit_time')->nullable();
