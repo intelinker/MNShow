@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
+use App\product;
 use Illuminate\Http\Request;
 
 class ChannelController extends Controller
@@ -183,6 +184,6 @@ class ChannelController extends Controller
     }
 
     public function loadChannels() {
-        return ['success' => true, 'channels' => Channel::all()];
+        return ['success' => true, 'channels' => Channel::all(), 'products'=>product::all()];
     }
 }
