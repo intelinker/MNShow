@@ -171,7 +171,8 @@ class ProductController extends Controller
         $menus = Menu::all();
         $products = array();
         $images = array();
-        if ($level1 = 4) {
+//        dd($level1);
+        if ($level1 == 4) {
             $products = customer::all();
             $images = CustomerImage::all();
         } else
