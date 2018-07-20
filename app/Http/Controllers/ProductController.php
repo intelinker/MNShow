@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\customer;
+use App\CustomerImage;
 use App\Menu;
 use App\product;
 use Illuminate\Http\Request;
@@ -175,12 +176,14 @@ class ProductController extends Controller
     public function syncProducts($level1) {
         $menus = Menu::all();
         $products = array();
+        $images = array();
         if ($level1 = 4) {
             $products = customer::all();
+            $images = CustomerImage::all();
         } else
             $products = product::where('level1', $level1)->get();
         if (count($menus) > 0) {
-            return ['success' => true, 'menus' => $menus, 'products' => $products];
+            return ['success' => true, 'menus' => $menus, 'products' => $products, 'images' => $images];
         } else
             return ['success' => false];
     }

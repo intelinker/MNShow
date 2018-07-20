@@ -132,7 +132,7 @@ class CustomerController extends Controller
             $customers = customer::all();
         }
         if (count($customers) > 0) {
-            return ['success' => true, 'customers' => $customers];
+            return ['success' => true, 'customers' => $customers, 'images'=>CustomerImage::all()];
         } else {
             return ['success' => false];
         }
@@ -188,7 +188,6 @@ class CustomerController extends Controller
             $object[$key] = $this->object_array($value);
         }
         return $this->object_to_array(json_decode(json_encode($object)));
-
     }
 
     function object_array($array) {
