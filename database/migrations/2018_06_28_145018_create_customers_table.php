@@ -20,6 +20,7 @@ class CreateCustomersTable extends Migration
             $table->integer('channel_category1')->nullable()->default(0);
             $table->integer('channel_category2')->nullable()->default(0);
             $table->integer('channel_category3')->nullable()->default(0);
+            $table->string("channel_string")->nullable();
             $table->string('visit_time')->nullable();
             $table->string('contract_time')->nullable();
             $table->string('contract_duration')->nullable();
