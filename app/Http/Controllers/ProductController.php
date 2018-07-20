@@ -175,7 +175,7 @@ class ProductController extends Controller
     public function syncProducts($level1) {
         $menus = Menu::all();
         $products = array();
-        if ($level1 < 4) {
+        if ($level1 = 4) {
             $products = customer::all();
         } else
             $products = product::where('level1', $level1)->get();
