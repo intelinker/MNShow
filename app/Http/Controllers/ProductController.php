@@ -7,21 +7,10 @@ use App\CustomerImage;
 use App\Menu;
 use App\product;
 use Illuminate\Http\Request;
-use Pbmedia\LaravelFFMpeg\FFMpeg;
-use FFMpeg\FFProbe;
+
 
 class ProductController extends Controller
 {
-    private $ffmpeg;
-
-    /**
-     * ProductController constructor.
-     * @param $ffmpeg
-     */
-    public function __construct(FFMpeg $ffmpeg)
-    {
-        $this->ffmpeg = $ffmpeg;
-    }
 
 
     /**
@@ -56,10 +45,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $avatar = $request['avatar'];
-        $avatar = $this->uploadFile($avatar, "product");
-//                        dd(array_merge($request->except('avatar', '_token'), ['avatar'=>$avatar]));
+        $file = $this->uploadFile($avatar, "product");
+        $path = $file['path'];
+        $duration = $file['duration'];
+//        dd(gettype($duration));
+//                        dd(array_merge($request->except('avatar', '_token'), ['avatar'=>$path, 'play_duration' => $duration]));
 
-        $product = product::create(array_merge($request->except('avatar', '_token'), ['avatar'=>$avatar]));
+        $product = product::create(array_merge($request->except('avatar', '_token'), ['avatar'=>$path, 'play_duration' => $duration]));
 
         return view('product.index', ['products' => product::all(), 'menu'=>$this->getMenu1(), 'menu2'=>$this->getMenu2()]);
     }
@@ -98,8 +90,10 @@ class ProductController extends Controller
         $avatar = $request['avatar'];//$request->file('avatar');
 //                dd($avatar);
         if ($avatar != null) {
-            $avatar = $this->uploadFile($avatar, "product");
-            $update = $product->update(array_merge($request->except('avatar'), ['avatar'=>$avatar]));
+            $file = $this->uploadFile($avatar, "product");
+            $path = $file['path'];
+            $duration = $file['duration'];
+            $update = $product->update(array_merge($request->except('avatar'), ['avatar'=>$path, 'play_duration' => $duration]));
         } else {
             $update = $product->update($request->except('avatar'));
         }

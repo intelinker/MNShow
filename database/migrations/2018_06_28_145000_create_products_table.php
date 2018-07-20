@@ -16,6 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
+            $table->integer('play_duration')->default(0);
             $table->string('subtitle')->nullable();
             $table->string('weight')->nullable();
             $table->string('avatar');

@@ -6,10 +6,23 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Pbmedia\LaravelFFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    private $ffmpeg;
+
+    /**
+     * Controller constructor.
+     * @param $ffmpeg
+     */
+    public function __construct(FFMpeg $ffmpeg)
+    {
+        $this->ffmpeg = $ffmpeg;
+    }
+
 
     public function uploadFile($file, $path) {
         $destPath = 'images/'.$path.'/';
@@ -17,6 +30,7 @@ class Controller extends BaseController
         $saveFile = $file->move($destPath, $fileName);
         $fileType = substr(strrchr($fileName, '.'), 1);
         $justName = explode(".", $fileName)[0];
+        $duration = 0;
         if ($fileType == "mp4" || $fileType == "mpeg") {
             $video = $this->ffmpeg->fromDisk('video')->open($fileName);
 
@@ -27,7 +41,7 @@ class Controller extends BaseController
         }
 //        dd($saveFile);
         if ($saveFile != null)
-            return '/'.$destPath.$fileName;
+            return ["path" => '/'.$destPath.$fileName, "duration" => $duration];
         else
             return null;
     }

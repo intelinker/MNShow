@@ -77,7 +77,7 @@ class MenuController extends Controller
         $avatar = $request['avatar'];//$request->file('avatar');
 //                dd($avatar);
         if ($avatar != null) {
-            $avatar = $this->uploadFile($avatar, "menu");
+            $avatar = $this->uploadFile($avatar, "menu")['path'];
             $update = $menu->update(array_merge($request->except('avatar'), ['avatar'=>$avatar]));
         } else {
             $update = $menu->update($request->except('avatar'));
