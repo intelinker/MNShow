@@ -31,6 +31,8 @@ class Controller extends BaseController
         $fileType = substr(strrchr($fileName, '.'), 1);
         $justName = explode(".", $fileName)[0];
         $duration = 0;
+        $mediaPath = '/'.$destPath.$fileName;
+        $imagePath = $mediaPath;
         if ($fileType == "mp4" || $fileType == "mpeg") {
             $video = $this->ffmpeg->fromDisk('video')->open($fileName);
 
@@ -38,10 +40,11 @@ class Controller extends BaseController
 //                        dd($duration);
 
             $video->getFrameFromSeconds($duration / 3)->export()->toDisk('video')->save($justName.".jpg");
+            $imagePath = '/'.$destPath.$justName.".jpg";
         }
 //        dd($saveFile);
         if ($saveFile != null)
-            return ["path" => '/'.$destPath.$fileName, "duration" => $duration];
+            return ["path" => $mediaPath, "duration" => $duration, "imagePath"=>$imagePath];
         else
             return null;
     }

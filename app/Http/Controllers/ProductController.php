@@ -51,7 +51,8 @@ class ProductController extends Controller
 //        dd(gettype($duration));
 //                        dd(array_merge($request->except('avatar', '_token'), ['avatar'=>$path, 'play_duration' => $duration]));
 
-        $product = product::create(array_merge($request->except('avatar', '_token'), ['avatar'=>$path, 'play_duration' => $duration]));
+        $product = product::create(array_merge($request->except('avatar', '_token'), ['avatar'=>$path, 'play_duration' => $duration
+            , 'image_path'=>$file['imagePath']]));
 
         return view('product.index', ['products' => product::all(), 'menu'=>$this->getMenu1(), 'menu2'=>$this->getMenu2()]);
     }
@@ -93,7 +94,8 @@ class ProductController extends Controller
             $file = $this->uploadFile($avatar, "product");
             $path = $file['path'];
             $duration = $file['duration'];
-            $update = $product->update(array_merge($request->except('avatar'), ['avatar'=>$path, 'play_duration' => $duration]));
+            $update = $product->update(array_merge($request->except('avatar'), ['avatar'=>$path, 'play_duration' => $duration
+                , 'image_path'=>$file['imagePath']]));
         } else {
             $update = $product->update($request->except('avatar'));
         }
