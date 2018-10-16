@@ -128,6 +128,8 @@ class UserController extends Controller
         ])) {
             return redirect('/');
         } else {
+            if (!is_writable(config('session.files')))
+                dd('session can not writable');
             \Session::flash('login_failed', '手机号或密码错误！');
             return redirect('login')->withInput();
         }
