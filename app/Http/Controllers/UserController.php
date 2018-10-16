@@ -115,7 +115,7 @@ class UserController extends Controller
     }
 
     public function login() {
-        if (!is_writable(config('session.files')))
+        if (is_writable(config('session.files')))
             dd('session can not writable');
         return view('user.login');
     }
