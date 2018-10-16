@@ -13,7 +13,7 @@
 <body class="text-center">
 
 {!! Form::open(array('url'=>'signin', 'method'=>'post')) !!}
-
+            @csrf
 {{--    {!! Form::open(['url'=>'login']) !!}--}}
 {{--<form action='login' method="post" class="form-signin" role="form">--}}
     {{--{{ csrf_field() }}--}}
