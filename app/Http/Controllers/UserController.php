@@ -91,7 +91,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findorFail($id);
-        $user->update($request->all());
+        $allRequest = $request->except('_token');
+        $user->update(array_merge($allRequest, ['vipass' => $allRequest['password']]));
         $users = User::all();
         return view('user.index', ['users' => $users]);
     }
