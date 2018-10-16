@@ -115,21 +115,21 @@ class UserController extends Controller
     }
 
     public function login() {
-
+        if (!is_writable(config('session.files')))
+            dd('session can not writable');
         return view('user.login');
     }
 
     public function signin(LoginRequest $request) {
 //        var_dump($request->all());
 //        dd('login submit'.$request->all());
+
         if (Auth::attempt([
             'cellphone' =>$request->get('cellphone'),
             'password'  =>$request->get('password'),
         ])) {
             return redirect('/');
         } else {
-            if (!is_writable(config('session.files')))
-                dd('session can not writable');
             \Session::flash('login_failed', '手机号或密码错误！');
             return redirect('login')->withInput();
         }
