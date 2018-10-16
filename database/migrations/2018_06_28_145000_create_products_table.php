@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('subtitle')->nullable();
             $table->string('weight')->nullable();
             $table->string('avatar');
+            $table->integer('order')->default(0);
             $table->integer('play_duration')->default(0);
             $table->string("image_path")->nullable();
             $table->integer('level1');
