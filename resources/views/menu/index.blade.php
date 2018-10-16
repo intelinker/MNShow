@@ -10,7 +10,7 @@
             </li>
         </ul>
     </nav>
-
+    @csrf
     <div class="container-fluid">
         <div class="row">
             @include('layouts.sidebar')
