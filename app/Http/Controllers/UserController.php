@@ -127,7 +127,10 @@ class UserController extends Controller
 
     public function signin(LoginRequest $request) {
 //        var_dump($request->all());
-//        dd('auth info'.Auth);
+        dd(Auth::attempt([
+            'cellphone' =>$request->get('cellphone'),
+            'password'  =>$request->get('password'),
+        ]));
 
         if (Auth::attempt([
             'cellphone' =>$request->get('cellphone'),
