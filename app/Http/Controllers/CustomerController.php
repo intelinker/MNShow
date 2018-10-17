@@ -164,7 +164,39 @@ class CustomerController extends Controller
 //            }
         }
         if ($customer != null) {
-            return ['success' => true, 'customers' => customer::all()];
+            return ['success' => true, 'customers' => customer::all(), 'images'=>CustomerImage::all()];
+        } else
+            return ['success' => false, 'error' => 'no customer found!'];
+    }
+
+
+    public function updatecustomer(Request $request) {
+        $getArray = $this->getRequestArray($request);
+        $customer = customer::findOrFail($getArray['id']);
+
+        $customer->update($getArray);
+        $files = $request->file('image');//$_FILES['image'];
+        if (count($files) > 0) {
+            $upload = null;
+            foreach ($files as $file) {
+                $fileName = $file->getClientOriginalName();
+//                        dd($file);
+                CustomerImage::create([
+                    'name' => $fileName,
+                    'link' => '/images/customer/'.$fileName,
+                    'type' => 0,
+                    'order' => 0,
+                    'customer_id' => $customer->id,
+                ]);
+                $this->uploadFile($file, "customer");
+            }
+//            $upload = $this->uploadfiles($files);
+//            if (is_string($upload)) {
+//                return ['success' => false, 'error' => $upload];
+//            }
+        }
+        if ($customer != null) {
+            return ['success' => true, 'customers' => customer::all(), 'images'=>CustomerImage::all()];
         } else
             return ['success' => false, 'error' => 'no customer found!'];
     }

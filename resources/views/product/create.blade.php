@@ -39,6 +39,11 @@
         </p>
 
         <p>
+            <label for="intro" class="col-sm-2">介绍：</label>
+            {!! Form::textarea('intro', null, ['class'=>'col-sm-8', 'id'=>'intro']) !!}
+        </p>
+
+        <p>
             <label for="avatar" class="col-sm-2">图片：</label>
             {!! Form::file('avatar', array('class'=>'col-md-3', 'id'=>'avatar', 'required'=>'required')) !!}
             <img id="avatar_image" width="100"/>

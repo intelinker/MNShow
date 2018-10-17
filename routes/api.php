@@ -23,4 +23,6 @@ Route::get('channels', 'ChannelController@loadChannels');
 Route::get('syncproducts/{level1}', 'ProductController@syncProducts');
 Route::post('customers', 'CustomerController@customers@apiCustomers');
 Route::post('createcustomer', 'CustomerController@createCustomer');
+Route::post('updatecustomer', 'CustomerController@updateCustomer');
+
 //Route::get('syncmenuproducts', 'ProductController@syncMenuProducts');
