@@ -127,16 +127,17 @@ class UserController extends Controller
 
     public function signin(LoginRequest $request) {
 //        var_dump($request->all());
-//        dd(Auth::attempt([
-//            'cellphone' =>$request->get('cellphone'),
-//            'password'  =>$request->get('password'),
-//        ]));
+
 
         if (Auth::attempt([
             'cellphone' =>$request->get('cellphone'),
             'password'  =>$request->get('password'),
         ])) {
 //            return view('menu.index');
+                    dd(Auth::attempt([
+            'cellphone' =>$request->get('cellphone'),
+            'password'  =>$request->get('password'),
+        ]));
             return redirect('/');
         } else {
             \Session::flash('login_failed', '手机号或密码错误！');
