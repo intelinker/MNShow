@@ -56,7 +56,7 @@
                     <th scope="col">图片</th>
                     <th scope="col">所属一级菜单</th>
                     <th scope="col">所属二级目录</th>
-                    <th scope="col">操作</th>
+                    <th scope="col" style="min-width: 180px">操作</th>
 
                 </tr>
                 </thead>

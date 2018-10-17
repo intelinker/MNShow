@@ -36,7 +36,7 @@
                     <th scope="col">密码</th>
                     <th scope="col">权限</th>
                     <th scope="col">时间</th>
-                    <th scope="col">操作</th>
+                    <th scope="col" style="min-width: 180px">操作</th>
                 </tr>
                 </thead>
                 <tbody>

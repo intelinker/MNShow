@@ -30,7 +30,7 @@
                         <th scope="col">菜单一级目录名称</th>
                         <th scope="col">图标</th>
                         <th scope="col">菜单二级目录名称</th>
-                        <th scope="col">操作</th>
+                        <th scope="col" style="min-width: 200px">操作</th>
                     </tr>
                     </thead>
                     <tbody>
