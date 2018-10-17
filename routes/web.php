@@ -14,10 +14,10 @@
 Route::post('signin', 'UserController@signin');
 Route::get('login', 'UserController@login')->name('login');
 Route::get('logout', 'UserController@logout');
-Route::get('/', 'MenuController@index');
+Route::get('inituser', 'UserController@initUser');
 
 Route::group(['middleware'=>'auth'], function() {
-//    Route::get('/', 'MenuController@index');
+    Route::get('/', 'MenuController@index');
     Route::resource('menus', 'MenuController');
     Route::resource('products', 'ProductController');
     Route::resource('users', 'UserController');

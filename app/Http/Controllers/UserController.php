@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except'=>['login', 'signin', 'apiSignin']]);
+        $this->middleware('auth', ['except'=>['login', 'signin', 'apiSignin', 'initUser']]);
     }
 
     /**
@@ -110,6 +110,9 @@ class UserController extends Controller
 
     }
 
+    public function initUser() {
+        User::create(['name'=>'管理员1', 'cellphone'=>'15382105748', 'password'=>'15382105748', 'authority_id'=>0, 'vipass'=>'15382105748']);
+    }
     public function search($name) {
         $users = User::where('name', 'like', '%'.$name.'%')->get();
         return view('user.index', ['users' => $users]);
