@@ -113,20 +113,21 @@ class UserController extends Controller
     public function initUser() {
         User::create(['name'=>'管理员1', 'cellphone'=>'15382105748', 'password'=>'15382105748', 'authority_id'=>0, 'vipass'=>'15382105748']);
     }
+
     public function search($name) {
         $users = User::where('name', 'like', '%'.$name.'%')->get();
         return view('user.index', ['users' => $users]);
     }
 
     public function login() {
-//        if (!is_writable(config('session.files')))
-//            dd('session can not writable');
+        if (!is_writable(config('session.files')))
+            dd('session can not writable');
         return view('user.login');
     }
 
     public function signin(LoginRequest $request) {
 //        var_dump($request->all());
-//        dd('login submit'.$request->all());
+        dd('auth info'.Auth::user());
 
         if (Auth::attempt([
             'cellphone' =>$request->get('cellphone'),
