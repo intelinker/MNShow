@@ -134,9 +134,10 @@ class UserController extends Controller
             'password'  =>$request->get('password'),
         ])) {
 //            return view('menu.index');
-                    dd($request);
             return redirect('/');
         } else {
+                                dd($request);
+
             \Session::flash('login_failed', '手机号或密码错误！');
             return redirect('login')->withInput();
         }
