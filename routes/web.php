@@ -16,7 +16,7 @@ Route::get('login', 'UserController@login')->name('login');
 Route::get('logout', 'UserController@logout');
 Route::get('inituser', 'UserController@initUser');
 
-Route::group(['middleware'=>'auth'], function() {
+Route::group(['middleware'=>'auth', 'web'], function() {
     Route::get('/', 'MenuController@index');
     Route::resource('menus', 'MenuController');
     Route::resource('products', 'ProductController');
