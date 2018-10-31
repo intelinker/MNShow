@@ -33,7 +33,7 @@ class Controller extends BaseController
         $duration = 0;
         $mediaPath = '/'.$destPath.$fileName;
         $imagePath = $mediaPath;
-        if ($fileType == "mp4" || $fileType == "mpeg") {
+        if ($fileType == "mp4" || $fileType == "mpeg"|| $fileType == "avi") {
             $video = $this->ffmpeg->fromDisk('video')->open($fileName);
 
             $duration = $video->getDurationInSeconds();
