@@ -19,80 +19,99 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td>沈阳万豪大酒店</td>
-        <td>4</td>
-        <td>{{$customers}}</td>
-        <td>酒店</td>
-        <td>星级</td>
-        <td><img src=""></td>
-        <td>2018-09-03</td>
-        <td>2018-09-03</td>
-        <td>3年</td>
-        <td>桶冰系列</td>
-        <td>合作进展</td>
-        <td>小红</td>
-    </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td>沈阳万豪大酒店</td>
-        <td>4</td>
-        <td>餐饮</td>
-        <td>酒店</td>
-        <td>星级</td>
-        <td><img src=""></td>
-        <td>2018-09-03</td>
-        <td>2018-09-03</td>
-        <td>3年</td>
-        <td>桶冰系列</td>
-        <td>合作进展</td>
-        <td>小红</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>沈阳万豪大酒店</td>
-        <td>4</td>
-        <td>餐饮</td>
-        <td>酒店</td>
-        <td>星级</td>
-        <td><img src=""></td>
-        <td>2018-09-03</td>
-        <td>2018-09-03</td>
-        <td>3年</td>
-        <td>桶冰系列</td>
-        <td>合作进展</td>
-        <td>小红</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>沈阳万豪大酒店</td>
-        <td>4</td>
-        <td>餐饮</td>
-        <td>酒店</td>
-        <td>星级</td>
-        <td><img src=""></td>
-        <td>2018-09-03</td>
-        <td>2018-09-03</td>
-        <td>3年</td>
-        <td>桶冰系列</td>
-        <td>合作进展</td>
-        <td>小红</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>沈阳万豪大酒店</td>
-        <td>4</td>
-        <td>餐饮</td>
-        <td>酒店</td>
-        <td>星级</td>
-        <td><img src=""></td>
-        <td>2018-09-03</td>
-        <td>2018-09-03</td>
-        <td>3年</td>
-        <td>桶冰系列</td>
-        <td>合作进展</td>
-        <td>小红</td>
-    </tr>
+
+    @for($i=0; $i<count($customers); $i++)
+        <?php
+            $customer = $customers[$i];
+            $channel2 = $customer->channel2;
+            $channel3 = $customer->channel3;
+        ?>
+        <tr>
+            <th scope="row">{{$i}}</th>
+            <td>{{$customer->name}}</td>
+            <td>{{$customer->store_count}}</td>
+            <td>@if($customer->channel1 != null) {{$customer->channel1->name}} @else 该渠道不存在 @endif</td>
+            <td>@if($channel2 != null) {{$channel2->name}} @else - @endif</td>
+            <td>@if($channel3 != null) {{$channel3->name}} @else - @endif</td>
+            <td>@if($customer->image != null && count($customer->image) > 0) <img width="50px" src="{{$customer->image[0]->link}}"> @endif</td>
+            <td>{{$customer->visit_time}}</td>
+            <td>{{$customer->contract_time}}</td>
+            <td>{{$customer->contract_duration}}</td>
+            <td>
+                @if($customer->product != null && count($customer->product) > 0)
+                    <?php $productName = ""; ?>
+                    @foreach ($customer->product as $product)
+                        <?php $productName = $productName." ".$product->title; ?>
+                    @endforeach
+                    {{$productName}}
+                @else
+                    无
+                @endif
+            </td>
+            {{--<td>合作进展</td>--}}
+            <td>@if($customer->creator != null) {{ $customer->creator->name }} @else 该用户不存在 @endif</td>
+        </tr>
+    @endfor
+
+    {{--<tr>--}}
+        {{--<th scope="row">2</th>--}}
+        {{--<td>沈阳万豪大酒店</td>--}}
+        {{--<td>4</td>--}}
+        {{--<td>餐饮</td>--}}
+        {{--<td>酒店</td>--}}
+        {{--<td>星级</td>--}}
+        {{--<td><img src=""></td>--}}
+        {{--<td>2018-09-03</td>--}}
+        {{--<td>2018-09-03</td>--}}
+        {{--<td>3年</td>--}}
+        {{--<td>桶冰系列</td>--}}
+        {{--<td>合作进展</td>--}}
+        {{--<td>小红</td>--}}
+    {{--</tr>--}}
+    {{--<tr>--}}
+        {{--<th scope="row">3</th>--}}
+        {{--<td>沈阳万豪大酒店</td>--}}
+        {{--<td>4</td>--}}
+        {{--<td>餐饮</td>--}}
+        {{--<td>酒店</td>--}}
+        {{--<td>星级</td>--}}
+        {{--<td><img src=""></td>--}}
+        {{--<td>2018-09-03</td>--}}
+        {{--<td>2018-09-03</td>--}}
+        {{--<td>3年</td>--}}
+        {{--<td>桶冰系列</td>--}}
+        {{--<td>合作进展</td>--}}
+        {{--<td>小红</td>--}}
+    {{--</tr>--}}
+    {{--<tr>--}}
+        {{--<th scope="row">3</th>--}}
+        {{--<td>沈阳万豪大酒店</td>--}}
+        {{--<td>4</td>--}}
+        {{--<td>餐饮</td>--}}
+        {{--<td>酒店</td>--}}
+        {{--<td>星级</td>--}}
+        {{--<td><img src=""></td>--}}
+        {{--<td>2018-09-03</td>--}}
+        {{--<td>2018-09-03</td>--}}
+        {{--<td>3年</td>--}}
+        {{--<td>桶冰系列</td>--}}
+        {{--<td>合作进展</td>--}}
+        {{--<td>小红</td>--}}
+    {{--</tr>--}}
+    {{--<tr>--}}
+        {{--<th scope="row">3</th>--}}
+        {{--<td>沈阳万豪大酒店</td>--}}
+        {{--<td>4</td>--}}
+        {{--<td>餐饮</td>--}}
+        {{--<td>酒店</td>--}}
+        {{--<td>星级</td>--}}
+        {{--<td><img src=""></td>--}}
+        {{--<td>2018-09-03</td>--}}
+        {{--<td>2018-09-03</td>--}}
+        {{--<td>3年</td>--}}
+        {{--<td>桶冰系列</td>--}}
+        {{--<td>合作进展</td>--}}
+        {{--<td>小红</td>--}}
+    {{--</tr>--}}
     </tbody>
 </table>

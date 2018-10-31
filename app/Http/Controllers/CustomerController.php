@@ -112,6 +112,7 @@ class CustomerController extends Controller
 
     public function customersExport() {
         return $this->excel->download(new CustomersExport('customers1'), 'customers.xlsx');
+
 //        (new InvoicesExport)->download('invoices.xlsx');
 //        Excel::download(new CustomersExport(), 'customers.xlsx');
 
@@ -359,7 +360,7 @@ class CustomerController extends Controller
         public function view(): View
         {
             return view('customer.table', [
-                'customers' => $this->customers
+                'customers' => customer::all()
             ]);
         }
     }
