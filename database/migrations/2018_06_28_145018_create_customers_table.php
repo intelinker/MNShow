@@ -24,7 +24,7 @@ class CreateCustomersTable extends Migration
             $table->string('visit_time')->nullable();
             $table->string('contract_time')->nullable();
             $table->string('contract_duration')->nullable();
-            $table->integer('corpration_products')->references('id')->on('products')->onDelete('cascade')->nullable();
+            $table->string('corpration_products')->references('id')->on('products')->onDelete('cascade')->nullable();
             $table->string('progress')->nullable();
             $table->integer('created_by')->references('id')->on('users')->onDelete('cascade');
 //            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));

@@ -161,10 +161,10 @@ class UserController extends Controller
         $users = User::select('id','name', 'cellphone', 'authority_id')
             ->where('cellphone', $request->get('cellphone'))
             ->where('vipass', $request->get('password'))
-            ->get();
+            ->first();
 //        dd($users);
         if (count($users) > 0) {
-            return ['success'=>true, 'user' => $users[0]];
+            return ['success'=>true, 'user' => $users];
         } else {
             return ['success'=>false];
         }
