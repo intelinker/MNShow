@@ -46,7 +46,7 @@
         <p>
             <label for="avatar" class="col-sm-2">图片：</label>
             {!! Form::file('avatar', array('class'=>'col-md-3', 'id'=>'avatar')) !!}
-            <img id="avatar_image" width="100" src="{{$product->avatar}}"/>
+            <img id="avatar_image" width="100" src="{{$product->image_path}}"/>
         </p>
 
 
