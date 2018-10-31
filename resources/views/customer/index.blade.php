@@ -87,17 +87,7 @@
                         <td>{{$customer->visit_time}}</td>
                         <td>{{$customer->contract_time}}</td>
                         <td>{{$customer->contract_duration}}</td>
-                        <td>{{$customer->corpration_products}}
-                            {{--@if($customer->product != null && count($customer->product) > 0)--}}
-                                {{--<?php $productName = ""; ?>--}}
-                                {{--@foreach ($customer->product as $product)--}}
-                                    {{--<?php $productName = $productName." ".$product->title; ?>--}}
-                                    {{--@endforeach--}}
-                                {{--{{$productName}}--}}
-                            {{--@else--}}
-                                {{--无--}}
-                            {{--@endif--}}
-                        </td>
+                        <td>{{$customer->corpration_products}}</td>
                         {{--<td>合作进展</td>--}}
                         <td>@if($customer->creator != null) {{ $customer->creator->name }} @else 该用户不存在 @endif</td>
                         <td>
@@ -113,6 +103,7 @@
     </main>
 </div>
 </body>
+
 <script type="text/javascript" src="/js/jQuery-3.3.1.min.js"></script>
 <script src="/js/bootstrap-datetimepicker.js"></script>
 
