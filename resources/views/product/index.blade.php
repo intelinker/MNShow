@@ -62,12 +62,12 @@
                 </thead>
                 <tbody>
                 @for($i=0; $i<count($products); $i++)
-<!--                    --><?php
-//                        $product = $products[$i];
+                    <?php
+                        $product = $products[$i];
 //                        if (substr(strrchr($product->avatar, '.'), 1) == 'mp4' || substr(strrchr($product->avatar, '.'), 1) == 'mpeg'|| substr(strrchr($product->avatar, '.'), 1) == 'avi') {
 //                            $product->avatar = explode(".", $product->avatar)[0].".jpg";
 //                        }
-//                    ?>
+                    ?>
                     <tr>
                         {!! Form::open(array('url'=>'/products/'.$product->id, 'method'=>'delete')) !!}
                         <th scope="row">{{$i +1}}</th>
