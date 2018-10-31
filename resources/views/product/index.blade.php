@@ -74,7 +74,7 @@
                         <td>{{$product->title}}</td>
                         <td>{{$product->subtitle}}</td>
                         <td>{{$product->weight}}</td>
-                        <td><img src="{{$product->image_path}" width="40px"></td>
+                        <td><img src="{{$product->image_path}}" width="40px"></td>
                         <td>{{$product->menu->name}}</td>
                         <td>{{count($menu2[$product->level1]) == 0 ? '无' : $menu2[$product->level1][$product->level2]}}</td>
                         <td>
