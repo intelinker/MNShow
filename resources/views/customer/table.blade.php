@@ -13,7 +13,7 @@
         <th scope="col">签订合同时间</th>
         <th scope="col">签订合同期限</th>
         <th scope="col">合作产品</th>
-        <th scope="col">进展</th>
+        {{--<th scope="col">进展</th>--}}
         <th scope="col">录入人</th>
 
     </tr>
