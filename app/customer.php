@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class customer extends Model
 {
     protected $fillable = ['name', 'store_count', 'channel_category1', 'channel_category2', 'channel_category3', 'channel_string'
-        , 'visit_time', 'contract_time', 'contract_duration', 'corperation_products', 'progress', 'created_by', 'created_at'];
+        , 'visit_time', 'contract_time', 'contract_duration', 'corpration_products', 'progress', 'created_by', 'created_at'];
 
     public function channel1() {
         return $this->hasOne('App\Channel', "id", "channel_category1");
