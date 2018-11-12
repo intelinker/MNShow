@@ -21,7 +21,7 @@ Route::post('signin', 'UserController@apiSignin');
 Route::get('channels', 'ChannelController@loadChannels');
 //Route::get('syncmenus', 'MenuController@syncData');
 Route::get('syncproducts/{level1}', 'ProductController@syncProducts');
-Route::post('customers', 'CustomerController@customers@apiCustomers');
+Route::post('customers', 'CustomerController@apiCustomers');
 Route::post('createcustomer', 'CustomerController@createCustomer');
 Route::post('updatecustomer', 'CustomerController@updateCustomer');
 
