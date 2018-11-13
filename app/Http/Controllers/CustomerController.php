@@ -144,6 +144,7 @@ class CustomerController extends Controller
 
 
         $customer = customer::create($this->getRequestArray($request));
+
         $files = $request->file('image');//$_FILES['image'];
         if (count($files) > 0) {
             $upload = null;
@@ -173,10 +174,16 @@ class CustomerController extends Controller
 
     public function updatecustomer(Request $request) {
         $getArray = $this->getRequestArray($request);
-        $customer = customer::findOrFail($getArray['id']);
+//        dd(customer::findOrFail($getArray['id']));
+        $id = $getArray['id'];
+        $customer = customer::findOrFail($id);
+//        if ($customer == null)
+//            return ['success' => false, 'error' => 'no customer found!'];
 
         $customer->update($getArray);
+        CustomerImage::where('customer_id', $id)->delete();
         $files = $request->file('image');//$_FILES['image'];
+//        dd($files);
         if (count($files) > 0) {
             $upload = null;
             foreach ($files as $file) {

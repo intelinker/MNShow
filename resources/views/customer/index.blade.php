@@ -77,7 +77,7 @@
                     ?>
                     <tr>
                         {!! Form::open(array('url'=>'/customers/'.$customer->id, 'method'=>'delete')) !!}
-                        <th scope="row">{{$i}}</th>
+                        <th scope="row">{{$i + 1}}</th>
                         <td>{{$customer->name}}</td>
                         <td>{{$customer->store_count}}</td>
                         <td>@if($customer->channel1 != null) {{$customer->channel1->name}} @else 该渠道不存在 @endif</td>
