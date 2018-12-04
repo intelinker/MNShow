@@ -76,7 +76,7 @@
                         <td>{{$product->weight}}</td>
                         <td><img src="{{$product->image_path}}" width="40px"></td>
                         <td>{{$product->menu->name}}</td>
-                        <td>{{count($menu2[$product->level1]) == 0 ? '无' : $menu2[$product->level1][$product->level2]}}</td>
+                        <td>{{(count($menu2[$product->level1]) > 0 && count($menu2[$product->level1]) > $product->level2) ? $menu2[$product->level1][$product->level2] : '无'}}</td>
                         <td>
                             <button id="edit_3" type="button" class="btn btn-warning" onclick="edit({{$product->id}})">修改</button>
                             {!! Form::submit('删除', ['class' => 'btn btn-light', 'style' => 'margin-left:30px']) !!}
